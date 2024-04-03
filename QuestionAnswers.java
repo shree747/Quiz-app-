@@ -1,112 +1,25 @@
 package com.example.quizz_app;
 
-import android.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+public class QuestionAnswer {
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
-    TextView questionTextView;
-    TextView totalQuestionTextView;
-    Button ansA,ansB,ansC,ansD;
-    Button btn_submit;
-
-    int score=0;
-    int totalQuestion = com.example.quiz_app.QuestionAnswer.question.length;
-    int currentQuestionIndex =0;
-    String selectedAnswer="";
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        totalQuestionTextView = findViewById(R.id.total_question);
-        questionTextView = findViewById(R.id.question);
-        ansA = findViewById(R.id.ans_a);
-        ansB = findViewById(R.id.ans_b);
-        ansC= findViewById(R.id.ans_c);
-        ansD = findViewById(R.id.ans_d);
-        btn_submit = findViewById(R.id.btn_submit);
-
-        ansA.setOnClickListener(this);
-        ansB.setOnClickListener(this);
-        ansC.setOnClickListener(this);
-        ansD.setOnClickListener(this);
-        btn_submit.setOnClickListener(this);
-
-
-        totalQuestionTextView.setText("Total question: "+totalQuestion);
-
-        loadNewQuestion();
-    }
-
-    private void loadNewQuestion(){
-        if(currentQuestionIndex == totalQuestion){
-            finishQuiz();
-            return;
-        }
-        questionTextView.setText(com.example.quiz_app.QuestionAnswer.question[currentQuestionIndex]);
-        ansA.setText(com.example.quiz_app.QuestionAnswer.choices[currentQuestionIndex][0]);
-        ansB.setText(com.example.quiz_app.QuestionAnswer.choices[currentQuestionIndex][1]);
-        ansC.setText(com.example.quiz_app.QuestionAnswer.choices[currentQuestionIndex][2]);
-        ansD.setText(com.example.quiz_app.QuestionAnswer.choices[currentQuestionIndex][3]);
-
-        selectedAnswer="";
-
-    }
-
-    private void finishQuiz(){
-        String passStatus;
-        if(score >= totalQuestion*0.6){
-            passStatus = "Passed";
-        }else{
-            passStatus = "Failed";
-        }
-        new AlertDialog.Builder(this)
-                .setTitle(passStatus)
-                .setMessage("Your Score is "+score+" Out of "+totalQuestion)
-                .setPositiveButton("Restart",((dialog, i) -> restartQuiz() ))
-                .setCancelable(false)
-                .show();
-    }
-
-    private void restartQuiz(){
-        score = 0;
-        currentQuestionIndex=0;
-        loadNewQuestion();
-    }
-
-    @Override
-    public void onClick(View view){
-        ansA.setBackgroundColor(Color.WHITE);
-        ansB.setBackgroundColor(Color.WHITE);
-        ansC.setBackgroundColor(Color.WHITE);
-        ansD.setBackgroundColor(Color.WHITE);
-
-        Button clickedButton = (Button) view;
-
-        if(clickedButton.getId() == R.id.btn_submit) {
-            if(!selectedAnswer.isEmpty()){
-                com.example.quiz_app.QuestionAnswer QuestionAnswer = null;
-                if(selectedAnswer.equals(QuestionAnswer.correctAnswers[currentQuestionIndex])){
-                    score++;
-                }else{
-                    clickedButton.setBackgroundColor(Color.MAGENTA);
-                }
-                currentQuestionIndex++;
-                loadNewQuestion();
-            }else{
-
-            }
-        }
-        else{
-            selectedAnswer=clickedButton.getText().toString();
-            clickedButton.setBackgroundColor(Color.YELLOW);
-        }
-    }
+    public static String question []={
+            "What is 10+26 ?",
+            "Who invented Telephone?",
+            "what is 12*9 ?",
+            "who is the founder of SpaceX?",
+            "In the given options, which is the Example of System Software?"
+    };
+    public static String choices [][]={
+            {"32" , "42" , "36" , "38"},
+            {"Graham Bell" , "Einstein" , "Edison" , "None of the above"},
+            {"96" , "84" , "102" , "108"},
+            {"Jeff Bezos" , "Elon Musk" , "Steve Jobs" , "Bill Gates"},
+            {"Windows" , "Linux" , "MacOS" , "All of the above"}
+    };
+    public static String correctAnswers []={
+            "36" ,
+            "Graham Bell",
+            "108",
+            "Elon Musk",
+            "All of the above"};
 }
-
